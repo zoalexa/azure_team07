@@ -1,0 +1,54 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "vulnerabilityAssessments_Default_storageContainerPath": {
+            "value": null
+        },
+        "sites_MultiSoftware07WebApp_name": {
+            "value": null
+        },
+        "servers_multisoftware_server_07_name": {
+            "value": null
+        },
+        "sites_MultiSoftwareFunctionApp07_name": {
+            "value": null
+        },
+        "vaults_MultiSoftwareKeyVault07_name": {
+            "value": null
+        },
+        "components_MultiSoftware07WebApp_name": {
+            "value": null
+        },
+        "virtualNetworks_MultiSoftwareVNet07_name": {
+            "value": null
+        },
+        "serverfarms_ASP_MultiSoftwareRSG07_9dc7_name": {
+            "value": null
+        },
+        "components_MultiSoftwareFunctionApp07_name": {
+            "value": null
+        },
+        "azureFirewalls_MultiSoftwareFirewall07_name": {
+            "value": null
+        },
+        "storageAccounts_multisoftwarestorage07_name": {
+            "value": null
+        },
+        "publicIPAddresses_MultiSoftwarePublicIP07_name": {
+            "value": null
+        },
+        "firewallPolicies_MultiSoftwareFirewallPolicy07_name": {
+            "value": null
+        },
+        "actionGroups_Application_Insights_Smart_Detection_name": {
+            "value": null
+        },
+        "publicIPAddresses_MultiSoftwareManagementPublicIP07_name": {
+            "value": null
+        },
+        "workspaces_DefaultWorkspace_b44c29a2_28d7_496c_9428_61edd158e630_NEU_externalid": {
+            "value": null
+        }
+    }
+}

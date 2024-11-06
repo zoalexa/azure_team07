@@ -1,0 +1,2345 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "vulnerabilityAssessments_Default_storageContainerPath": {
+            "type": "SecureString"
+        },
+        "sites_MultiSoftware07WebApp_name": {
+            "defaultValue": "MultiSoftware07WebApp",
+            "type": "String"
+        },
+        "servers_multisoftware_server_07_name": {
+            "defaultValue": "multisoftware-server-07",
+            "type": "String"
+        },
+        "sites_MultiSoftwareFunctionApp07_name": {
+            "defaultValue": "MultiSoftwareFunctionApp07",
+            "type": "String"
+        },
+        "vaults_MultiSoftwareKeyVault07_name": {
+            "defaultValue": "MultiSoftwareKeyVault07",
+            "type": "String"
+        },
+        "components_MultiSoftware07WebApp_name": {
+            "defaultValue": "MultiSoftware07WebApp",
+            "type": "String"
+        },
+        "virtualNetworks_MultiSoftwareVNet07_name": {
+            "defaultValue": "MultiSoftwareVNet07",
+            "type": "String"
+        },
+        "serverfarms_ASP_MultiSoftwareRSG07_9dc7_name": {
+            "defaultValue": "ASP-MultiSoftwareRSG07-9dc7",
+            "type": "String"
+        },
+        "components_MultiSoftwareFunctionApp07_name": {
+            "defaultValue": "MultiSoftwareFunctionApp07",
+            "type": "String"
+        },
+        "azureFirewalls_MultiSoftwareFirewall07_name": {
+            "defaultValue": "MultiSoftwareFirewall07",
+            "type": "String"
+        },
+        "storageAccounts_multisoftwarestorage07_name": {
+            "defaultValue": "multisoftwarestorage07",
+            "type": "String"
+        },
+        "publicIPAddresses_MultiSoftwarePublicIP07_name": {
+            "defaultValue": "MultiSoftwarePublicIP07",
+            "type": "String"
+        },
+        "firewallPolicies_MultiSoftwareFirewallPolicy07_name": {
+            "defaultValue": "MultiSoftwareFirewallPolicy07",
+            "type": "String"
+        },
+        "actionGroups_Application_Insights_Smart_Detection_name": {
+            "defaultValue": "Application Insights Smart Detection",
+            "type": "String"
+        },
+        "publicIPAddresses_MultiSoftwareManagementPublicIP07_name": {
+            "defaultValue": "MultiSoftwareManagementPublicIP07",
+            "type": "String"
+        },
+        "workspaces_DefaultWorkspace_b44c29a2_28d7_496c_9428_61edd158e630_NEU_externalid": {
+            "defaultValue": "/subscriptions/b44c29a2-28d7-496c-9428-61edd158e630/resourceGroups/DefaultResourceGroup-NEU/providers/Microsoft.OperationalInsights/workspaces/DefaultWorkspace-b44c29a2-28d7-496c-9428-61edd158e630-NEU",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "microsoft.insights/actionGroups",
+            "apiVersion": "2023-09-01-preview",
+            "name": "[parameters('actionGroups_Application_Insights_Smart_Detection_name')]",
+            "location": "Global",
+            "properties": {
+                "groupShortName": "SmartDetect",
+                "enabled": true,
+                "emailReceivers": [],
+                "smsReceivers": [],
+                "webhookReceivers": [],
+                "eventHubReceivers": [],
+                "itsmReceivers": [],
+                "azureAppPushReceivers": [],
+                "automationRunbookReceivers": [],
+                "voiceReceivers": [],
+                "logicAppReceivers": [],
+                "azureFunctionReceivers": [],
+                "armRoleReceivers": [
+                    {
+                        "name": "Monitoring Contributor",
+                        "roleId": "749f88d5-cbae-40b8-bcfc-e573ddc772fa",
+                        "useCommonAlertSchema": true
+                    },
+                    {
+                        "name": "Monitoring Reader",
+                        "roleId": "43d0d8ad-25c7-4714-9337-8ba259a9fe05",
+                        "useCommonAlertSchema": true
+                    }
+                ]
+            }
+        },
+        {
+            "type": "microsoft.insights/components",
+            "apiVersion": "2020-02-02",
+            "name": "[parameters('components_MultiSoftware07WebApp_name')]",
+            "location": "northeurope",
+            "tags": {
+                "MultiSoftware07": "production"
+            },
+            "kind": "web",
+            "properties": {
+                "Application_Type": "web",
+                "Flow_Type": "Redfield",
+                "Request_Source": "IbizaWebAppExtensionCreate",
+                "RetentionInDays": 90,
+                "WorkspaceResourceId": "[parameters('workspaces_DefaultWorkspace_b44c29a2_28d7_496c_9428_61edd158e630_NEU_externalid')]",
+                "IngestionMode": "LogAnalytics",
+                "publicNetworkAccessForIngestion": "Enabled",
+                "publicNetworkAccessForQuery": "Enabled"
+            }
+        },
+        {
+            "type": "microsoft.insights/components",
+            "apiVersion": "2020-02-02",
+            "name": "[parameters('components_MultiSoftwareFunctionApp07_name')]",
+            "location": "northeurope",
+            "tags": {
+                "MultiSoftware07": "production"
+            },
+            "kind": "web",
+            "properties": {
+                "Application_Type": "web",
+                "Flow_Type": "Redfield",
+                "Request_Source": "IbizaWebAppExtensionCreate",
+                "RetentionInDays": 90,
+                "WorkspaceResourceId": "[parameters('workspaces_DefaultWorkspace_b44c29a2_28d7_496c_9428_61edd158e630_NEU_externalid')]",
+                "IngestionMode": "LogAnalytics",
+                "publicNetworkAccessForIngestion": "Enabled",
+                "publicNetworkAccessForQuery": "Enabled"
+            }
+        },
+        {
+            "type": "Microsoft.KeyVault/vaults",
+            "apiVersion": "2024-04-01-preview",
+            "name": "[parameters('vaults_MultiSoftwareKeyVault07_name')]",
+            "location": "northeurope",
+            "tags": {
+                "MultiSoftware07": "production"
+            },
+            "properties": {
+                "sku": {
+                    "family": "A",
+                    "name": "Standard"
+                },
+                "tenantId": "b1732512-60e5-48fb-92e8-8d6902ac1349",
+                "networkAcls": {
+                    "bypass": "None",
+                    "defaultAction": "Allow",
+                    "ipRules": [],
+                    "virtualNetworkRules": []
+                },
+                "accessPolicies": [],
+                "enabledForDeployment": false,
+                "enabledForDiskEncryption": false,
+                "enabledForTemplateDeployment": false,
+                "enableSoftDelete": true,
+                "softDeleteRetentionInDays": 90,
+                "enableRbacAuthorization": true,
+                "enablePurgeProtection": true,
+                "vaultUri": "https://multisoftwarekeyvault07.vault.azure.net/",
+                "provisioningState": "Succeeded",
+                "publicNetworkAccess": "Enabled"
+            }
+        },
+        {
+            "type": "Microsoft.Network/firewallPolicies",
+            "apiVersion": "2024-01-01",
+            "name": "[parameters('firewallPolicies_MultiSoftwareFirewallPolicy07_name')]",
+            "location": "northeurope",
+            "properties": {
+                "sku": {
+                    "tier": "Basic"
+                },
+                "threatIntelMode": "Alert"
+            }
+        },
+        {
+            "type": "Microsoft.Network/publicIPAddresses",
+            "apiVersion": "2024-01-01",
+            "name": "[parameters('publicIPAddresses_MultiSoftwareManagementPublicIP07_name')]",
+            "location": "northeurope",
+            "tags": {
+                "MultiSoftware07": "production"
+            },
+            "sku": {
+                "name": "Standard",
+                "tier": "Regional"
+            },
+            "properties": {
+                "ipAddress": "40.87.157.78",
+                "publicIPAddressVersion": "IPv4",
+                "publicIPAllocationMethod": "Static",
+                "idleTimeoutInMinutes": 4,
+                "ipTags": []
+            }
+        },
+        {
+            "type": "Microsoft.Network/publicIPAddresses",
+            "apiVersion": "2024-01-01",
+            "name": "[parameters('publicIPAddresses_MultiSoftwarePublicIP07_name')]",
+            "location": "northeurope",
+            "tags": {
+                "MultiSoftware07": "production"
+            },
+            "sku": {
+                "name": "Standard",
+                "tier": "Regional"
+            },
+            "properties": {
+                "ipAddress": "40.87.156.5",
+                "publicIPAddressVersion": "IPv4",
+                "publicIPAllocationMethod": "Static",
+                "idleTimeoutInMinutes": 4,
+                "ipTags": []
+            }
+        },
+        {
+            "type": "Microsoft.Network/virtualNetworks",
+            "apiVersion": "2024-01-01",
+            "name": "[parameters('virtualNetworks_MultiSoftwareVNet07_name')]",
+            "location": "northeurope",
+            "properties": {
+                "addressSpace": {
+                    "addressPrefixes": [
+                        "10.0.0.0/16"
+                    ]
+                },
+                "subnets": [
+                    {
+                        "name": "AzureFirewallSubnet",
+                        "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworks_MultiSoftwareVNet07_name'), 'AzureFirewallSubnet')]",
+                        "properties": {
+                            "addressPrefixes": [
+                                "10.0.0.64/26"
+                            ],
+                            "delegations": [],
+                            "privateEndpointNetworkPolicies": "Disabled",
+                            "privateLinkServiceNetworkPolicies": "Enabled"
+                        },
+                        "type": "Microsoft.Network/virtualNetworks/subnets"
+                    },
+                    {
+                        "name": "AzureFirewallManagementSubnet",
+                        "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworks_MultiSoftwareVNet07_name'), 'AzureFirewallManagementSubnet')]",
+                        "properties": {
+                            "addressPrefixes": [
+                                "10.0.0.0/26"
+                            ],
+                            "delegations": [],
+                            "privateEndpointNetworkPolicies": "Disabled",
+                            "privateLinkServiceNetworkPolicies": "Enabled"
+                        },
+                        "type": "Microsoft.Network/virtualNetworks/subnets"
+                    }
+                ],
+                "virtualNetworkPeerings": [],
+                "enableDdosProtection": false
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers",
+            "apiVersion": "2023-08-01-preview",
+            "name": "[parameters('servers_multisoftware_server_07_name')]",
+            "location": "northeurope",
+            "tags": {
+                "MultiSoftware07": "production"
+            },
+            "kind": "v12.0",
+            "properties": {
+                "administratorLogin": "admin07",
+                "version": "12.0",
+                "minimalTlsVersion": "1.2",
+                "publicNetworkAccess": "Disabled",
+                "administrators": {
+                    "administratorType": "ActiveDirectory",
+                    "principalType": "User",
+                    "login": "programmeadministrator@athtech.gr",
+                    "sid": "5ab956f0-2f0b-43c5-adcf-9e62dcd6c4cf",
+                    "tenantId": "b1732512-60e5-48fb-92e8-8d6902ac1349",
+                    "azureADOnlyAuthentication": false
+                },
+                "restrictOutboundNetworkAccess": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts",
+            "apiVersion": "2023-05-01",
+            "name": "[parameters('storageAccounts_multisoftwarestorage07_name')]",
+            "location": "northeurope",
+            "tags": {
+                "MultiSoftware07": "production"
+            },
+            "sku": {
+                "name": "Standard_RAGRS",
+                "tier": "Standard"
+            },
+            "kind": "StorageV2",
+            "properties": {
+                "dnsEndpointType": "Standard",
+                "defaultToOAuthAuthentication": false,
+                "publicNetworkAccess": "Enabled",
+                "allowCrossTenantReplication": false,
+                "minimumTlsVersion": "TLS1_2",
+                "allowBlobPublicAccess": true,
+                "allowSharedKeyAccess": true,
+                "largeFileSharesState": "Enabled",
+                "networkAcls": {
+                    "bypass": "AzureServices",
+                    "virtualNetworkRules": [],
+                    "ipRules": [],
+                    "defaultAction": "Allow"
+                },
+                "supportsHttpsTrafficOnly": true,
+                "encryption": {
+                    "requireInfrastructureEncryption": false,
+                    "services": {
+                        "file": {
+                            "keyType": "Account",
+                            "enabled": true
+                        },
+                        "blob": {
+                            "keyType": "Account",
+                            "enabled": true
+                        }
+                    },
+                    "keySource": "Microsoft.Storage"
+                },
+                "accessTier": "Hot"
+            }
+        },
+        {
+            "type": "Microsoft.Web/serverfarms",
+            "apiVersion": "2023-12-01",
+            "name": "[parameters('serverfarms_ASP_MultiSoftwareRSG07_9dc7_name')]",
+            "location": "North Europe",
+            "tags": {
+                "MultiSoftware07": "production"
+            },
+            "sku": {
+                "name": "P0v3",
+                "tier": "Premium0V3",
+                "size": "P0v3",
+                "family": "Pv3",
+                "capacity": 1
+            },
+            "kind": "app",
+            "properties": {
+                "perSiteScaling": false,
+                "elasticScaleEnabled": false,
+                "maximumElasticWorkerCount": 1,
+                "isSpot": false,
+                "reserved": false,
+                "isXenon": false,
+                "hyperV": false,
+                "targetWorkerCount": 0,
+                "targetWorkerSizeId": 0,
+                "zoneRedundant": false
+            }
+        },
+        {
+            "type": "microsoft.insights/components/ProactiveDetectionConfigs",
+            "apiVersion": "2018-05-01-preview",
+            "name": "[concat(parameters('components_MultiSoftware07WebApp_name'), '/degradationindependencyduration')]",
+            "location": "northeurope",
+            "dependsOn": [
+                "[resourceId('microsoft.insights/components', parameters('components_MultiSoftware07WebApp_name'))]"
+            ],
+            "properties": {
+                "ruleDefinitions": {
+                    "Name": "degradationindependencyduration",
+                    "DisplayName": "Degradation in dependency duration",
+                    "Description": "Smart Detection rules notify you of performance anomaly issues.",
+                    "HelpUrl": "https://docs.microsoft.com/en-us/azure/application-insights/app-insights-proactive-performance-diagnostics",
+                    "IsHidden": false,
+                    "IsEnabledByDefault": true,
+                    "IsInPreview": false,
+                    "SupportsEmailNotifications": true
+                },
+                "enabled": true,
+                "sendEmailsToSubscriptionOwners": true,
+                "customEmails": []
+            }
+        },
+        {
+            "type": "microsoft.insights/components/ProactiveDetectionConfigs",
+            "apiVersion": "2018-05-01-preview",
+            "name": "[concat(parameters('components_MultiSoftwareFunctionApp07_name'), '/degradationindependencyduration')]",
+            "location": "northeurope",
+            "dependsOn": [
+                "[resourceId('microsoft.insights/components', parameters('components_MultiSoftwareFunctionApp07_name'))]"
+            ],
+            "properties": {
+                "ruleDefinitions": {
+                    "Name": "degradationindependencyduration",
+                    "DisplayName": "Degradation in dependency duration",
+                    "Description": "Smart Detection rules notify you of performance anomaly issues.",
+                    "HelpUrl": "https://docs.microsoft.com/en-us/azure/application-insights/app-insights-proactive-performance-diagnostics",
+                    "IsHidden": false,
+                    "IsEnabledByDefault": true,
+                    "IsInPreview": false,
+                    "SupportsEmailNotifications": true
+                },
+                "enabled": true,
+                "sendEmailsToSubscriptionOwners": true,
+                "customEmails": []
+            }
+        },
+        {
+            "type": "microsoft.insights/components/ProactiveDetectionConfigs",
+            "apiVersion": "2018-05-01-preview",
+            "name": "[concat(parameters('components_MultiSoftware07WebApp_name'), '/degradationinserverresponsetime')]",
+            "location": "northeurope",
+            "dependsOn": [
+                "[resourceId('microsoft.insights/components', parameters('components_MultiSoftware07WebApp_name'))]"
+            ],
+            "properties": {
+                "ruleDefinitions": {
+                    "Name": "degradationinserverresponsetime",
+                    "DisplayName": "Degradation in server response time",
+                    "Description": "Smart Detection rules notify you of performance anomaly issues.",
+                    "HelpUrl": "https://docs.microsoft.com/en-us/azure/application-insights/app-insights-proactive-performance-diagnostics",
+                    "IsHidden": false,
+                    "IsEnabledByDefault": true,
+                    "IsInPreview": false,
+                    "SupportsEmailNotifications": true
+                },
+                "enabled": true,
+                "sendEmailsToSubscriptionOwners": true,
+                "customEmails": []
+            }
+        },
+        {
+            "type": "microsoft.insights/components/ProactiveDetectionConfigs",
+            "apiVersion": "2018-05-01-preview",
+            "name": "[concat(parameters('components_MultiSoftwareFunctionApp07_name'), '/degradationinserverresponsetime')]",
+            "location": "northeurope",
+            "dependsOn": [
+                "[resourceId('microsoft.insights/components', parameters('components_MultiSoftwareFunctionApp07_name'))]"
+            ],
+            "properties": {
+                "ruleDefinitions": {
+                    "Name": "degradationinserverresponsetime",
+                    "DisplayName": "Degradation in server response time",
+                    "Description": "Smart Detection rules notify you of performance anomaly issues.",
+                    "HelpUrl": "https://docs.microsoft.com/en-us/azure/application-insights/app-insights-proactive-performance-diagnostics",
+                    "IsHidden": false,
+                    "IsEnabledByDefault": true,
+                    "IsInPreview": false,
+                    "SupportsEmailNotifications": true
+                },
+                "enabled": true,
+                "sendEmailsToSubscriptionOwners": true,
+                "customEmails": []
+            }
+        },
+        {
+            "type": "microsoft.insights/components/ProactiveDetectionConfigs",
+            "apiVersion": "2018-05-01-preview",
+            "name": "[concat(parameters('components_MultiSoftware07WebApp_name'), '/digestMailConfiguration')]",
+            "location": "northeurope",
+            "dependsOn": [
+                "[resourceId('microsoft.insights/components', parameters('components_MultiSoftware07WebApp_name'))]"
+            ],
+            "properties": {
+                "ruleDefinitions": {
+                    "Name": "digestMailConfiguration",
+                    "DisplayName": "Digest Mail Configuration",
+                    "Description": "This rule describes the digest mail preferences",
+                    "HelpUrl": "www.homail.com",
+                    "IsHidden": true,
+                    "IsEnabledByDefault": true,
+                    "IsInPreview": false,
+                    "SupportsEmailNotifications": true
+                },
+                "enabled": true,
+                "sendEmailsToSubscriptionOwners": true,
+                "customEmails": []
+            }
+        },
+        {
+            "type": "microsoft.insights/components/ProactiveDetectionConfigs",
+            "apiVersion": "2018-05-01-preview",
+            "name": "[concat(parameters('components_MultiSoftwareFunctionApp07_name'), '/digestMailConfiguration')]",
+            "location": "northeurope",
+            "dependsOn": [
+                "[resourceId('microsoft.insights/components', parameters('components_MultiSoftwareFunctionApp07_name'))]"
+            ],
+            "properties": {
+                "ruleDefinitions": {
+                    "Name": "digestMailConfiguration",
+                    "DisplayName": "Digest Mail Configuration",
+                    "Description": "This rule describes the digest mail preferences",
+                    "HelpUrl": "www.homail.com",
+                    "IsHidden": true,
+                    "IsEnabledByDefault": true,
+                    "IsInPreview": false,
+                    "SupportsEmailNotifications": true
+                },
+                "enabled": true,
+                "sendEmailsToSubscriptionOwners": true,
+                "customEmails": []
+            }
+        },
+        {
+            "type": "microsoft.insights/components/ProactiveDetectionConfigs",
+            "apiVersion": "2018-05-01-preview",
+            "name": "[concat(parameters('components_MultiSoftware07WebApp_name'), '/extension_billingdatavolumedailyspikeextension')]",
+            "location": "northeurope",
+            "dependsOn": [
+                "[resourceId('microsoft.insights/components', parameters('components_MultiSoftware07WebApp_name'))]"
+            ],
+            "properties": {
+                "ruleDefinitions": {
+                    "Name": "extension_billingdatavolumedailyspikeextension",
+                    "DisplayName": "Abnormal rise in daily data volume (preview)",
+                    "Description": "This detection rule automatically analyzes the billing data generated by your application, and can warn you about an unusual increase in your application's billing costs",
+                    "HelpUrl": "https://github.com/Microsoft/ApplicationInsights-Home/tree/master/SmartDetection/billing-data-volume-daily-spike.md",
+                    "IsHidden": false,
+                    "IsEnabledByDefault": true,
+                    "IsInPreview": true,
+                    "SupportsEmailNotifications": false
+                },
+                "enabled": true,
+                "sendEmailsToSubscriptionOwners": true,
+                "customEmails": []
+            }
+        },
+        {
+            "type": "microsoft.insights/components/ProactiveDetectionConfigs",
+            "apiVersion": "2018-05-01-preview",
+            "name": "[concat(parameters('components_MultiSoftwareFunctionApp07_name'), '/extension_billingdatavolumedailyspikeextension')]",
+            "location": "northeurope",
+            "dependsOn": [
+                "[resourceId('microsoft.insights/components', parameters('components_MultiSoftwareFunctionApp07_name'))]"
+            ],
+            "properties": {
+                "ruleDefinitions": {
+                    "Name": "extension_billingdatavolumedailyspikeextension",
+                    "DisplayName": "Abnormal rise in daily data volume (preview)",
+                    "Description": "This detection rule automatically analyzes the billing data generated by your application, and can warn you about an unusual increase in your application's billing costs",
+                    "HelpUrl": "https://github.com/Microsoft/ApplicationInsights-Home/tree/master/SmartDetection/billing-data-volume-daily-spike.md",
+                    "IsHidden": false,
+                    "IsEnabledByDefault": true,
+                    "IsInPreview": true,
+                    "SupportsEmailNotifications": false
+                },
+                "enabled": true,
+                "sendEmailsToSubscriptionOwners": true,
+                "customEmails": []
+            }
+        },
+        {
+            "type": "microsoft.insights/components/ProactiveDetectionConfigs",
+            "apiVersion": "2018-05-01-preview",
+            "name": "[concat(parameters('components_MultiSoftware07WebApp_name'), '/extension_canaryextension')]",
+            "location": "northeurope",
+            "dependsOn": [
+                "[resourceId('microsoft.insights/components', parameters('components_MultiSoftware07WebApp_name'))]"
+            ],
+            "properties": {
+                "ruleDefinitions": {
+                    "Name": "extension_canaryextension",
+                    "DisplayName": "Canary extension",
+                    "Description": "Canary extension",
+                    "HelpUrl": "https://github.com/Microsoft/ApplicationInsights-Home/blob/master/SmartDetection/",
+                    "IsHidden": true,
+                    "IsEnabledByDefault": true,
+                    "IsInPreview": true,
+                    "SupportsEmailNotifications": false
+                },
+                "enabled": true,
+                "sendEmailsToSubscriptionOwners": true,
+                "customEmails": []
+            }
+        },
+        {
+            "type": "microsoft.insights/components/ProactiveDetectionConfigs",
+            "apiVersion": "2018-05-01-preview",
+            "name": "[concat(parameters('components_MultiSoftwareFunctionApp07_name'), '/extension_canaryextension')]",
+            "location": "northeurope",
+            "dependsOn": [
+                "[resourceId('microsoft.insights/components', parameters('components_MultiSoftwareFunctionApp07_name'))]"
+            ],
+            "properties": {
+                "ruleDefinitions": {
+                    "Name": "extension_canaryextension",
+                    "DisplayName": "Canary extension",
+                    "Description": "Canary extension",
+                    "HelpUrl": "https://github.com/Microsoft/ApplicationInsights-Home/blob/master/SmartDetection/",
+                    "IsHidden": true,
+                    "IsEnabledByDefault": true,
+                    "IsInPreview": true,
+                    "SupportsEmailNotifications": false
+                },
+                "enabled": true,
+                "sendEmailsToSubscriptionOwners": true,
+                "customEmails": []
+            }
+        },
+        {
+            "type": "microsoft.insights/components/ProactiveDetectionConfigs",
+            "apiVersion": "2018-05-01-preview",
+            "name": "[concat(parameters('components_MultiSoftware07WebApp_name'), '/extension_exceptionchangeextension')]",
+            "location": "northeurope",
+            "dependsOn": [
+                "[resourceId('microsoft.insights/components', parameters('components_MultiSoftware07WebApp_name'))]"
+            ],
+            "properties": {
+                "ruleDefinitions": {
+                    "Name": "extension_exceptionchangeextension",
+                    "DisplayName": "Abnormal rise in exception volume (preview)",
+                    "Description": "This detection rule automatically analyzes the exceptions thrown in your application, and can warn you about unusual patterns in your exception telemetry.",
+                    "HelpUrl": "https://github.com/Microsoft/ApplicationInsights-Home/blob/master/SmartDetection/abnormal-rise-in-exception-volume.md",
+                    "IsHidden": false,
+                    "IsEnabledByDefault": true,
+                    "IsInPreview": true,
+                    "SupportsEmailNotifications": false
+                },
+                "enabled": true,
+                "sendEmailsToSubscriptionOwners": true,
+                "customEmails": []
+            }
+        },
+        {
+            "type": "microsoft.insights/components/ProactiveDetectionConfigs",
+            "apiVersion": "2018-05-01-preview",
+            "name": "[concat(parameters('components_MultiSoftwareFunctionApp07_name'), '/extension_exceptionchangeextension')]",
+            "location": "northeurope",
+            "dependsOn": [
+                "[resourceId('microsoft.insights/components', parameters('components_MultiSoftwareFunctionApp07_name'))]"
+            ],
+            "properties": {
+                "ruleDefinitions": {
+                    "Name": "extension_exceptionchangeextension",
+                    "DisplayName": "Abnormal rise in exception volume (preview)",
+                    "Description": "This detection rule automatically analyzes the exceptions thrown in your application, and can warn you about unusual patterns in your exception telemetry.",
+                    "HelpUrl": "https://github.com/Microsoft/ApplicationInsights-Home/blob/master/SmartDetection/abnormal-rise-in-exception-volume.md",
+                    "IsHidden": false,
+                    "IsEnabledByDefault": true,
+                    "IsInPreview": true,
+                    "SupportsEmailNotifications": false
+                },
+                "enabled": true,
+                "sendEmailsToSubscriptionOwners": true,
+                "customEmails": []
+            }
+        },
+        {
+            "type": "microsoft.insights/components/ProactiveDetectionConfigs",
+            "apiVersion": "2018-05-01-preview",
+            "name": "[concat(parameters('components_MultiSoftware07WebApp_name'), '/extension_memoryleakextension')]",
+            "location": "northeurope",
+            "dependsOn": [
+                "[resourceId('microsoft.insights/components', parameters('components_MultiSoftware07WebApp_name'))]"
+            ],
+            "properties": {
+                "ruleDefinitions": {
+                    "Name": "extension_memoryleakextension",
+                    "DisplayName": "Potential memory leak detected (preview)",
+                    "Description": "This detection rule automatically analyzes the memory consumption of each process in your application, and can warn you about potential memory leaks or increased memory consumption.",
+                    "HelpUrl": "https://github.com/Microsoft/ApplicationInsights-Home/tree/master/SmartDetection/memory-leak.md",
+                    "IsHidden": false,
+                    "IsEnabledByDefault": true,
+                    "IsInPreview": true,
+                    "SupportsEmailNotifications": false
+                },
+                "enabled": true,
+                "sendEmailsToSubscriptionOwners": true,
+                "customEmails": []
+            }
+        },
+        {
+            "type": "microsoft.insights/components/ProactiveDetectionConfigs",
+            "apiVersion": "2018-05-01-preview",
+            "name": "[concat(parameters('components_MultiSoftwareFunctionApp07_name'), '/extension_memoryleakextension')]",
+            "location": "northeurope",
+            "dependsOn": [
+                "[resourceId('microsoft.insights/components', parameters('components_MultiSoftwareFunctionApp07_name'))]"
+            ],
+            "properties": {
+                "ruleDefinitions": {
+                    "Name": "extension_memoryleakextension",
+                    "DisplayName": "Potential memory leak detected (preview)",
+                    "Description": "This detection rule automatically analyzes the memory consumption of each process in your application, and can warn you about potential memory leaks or increased memory consumption.",
+                    "HelpUrl": "https://github.com/Microsoft/ApplicationInsights-Home/tree/master/SmartDetection/memory-leak.md",
+                    "IsHidden": false,
+                    "IsEnabledByDefault": true,
+                    "IsInPreview": true,
+                    "SupportsEmailNotifications": false
+                },
+                "enabled": true,
+                "sendEmailsToSubscriptionOwners": true,
+                "customEmails": []
+            }
+        },
+        {
+            "type": "microsoft.insights/components/ProactiveDetectionConfigs",
+            "apiVersion": "2018-05-01-preview",
+            "name": "[concat(parameters('components_MultiSoftware07WebApp_name'), '/extension_securityextensionspackage')]",
+            "location": "northeurope",
+            "dependsOn": [
+                "[resourceId('microsoft.insights/components', parameters('components_MultiSoftware07WebApp_name'))]"
+            ],
+            "properties": {
+                "ruleDefinitions": {
+                    "Name": "extension_securityextensionspackage",
+                    "DisplayName": "Potential security issue detected (preview)",
+                    "Description": "This detection rule automatically analyzes the telemetry generated by your application and detects potential security issues.",
+                    "HelpUrl": "https://github.com/Microsoft/ApplicationInsights-Home/blob/master/SmartDetection/application-security-detection-pack.md",
+                    "IsHidden": false,
+                    "IsEnabledByDefault": true,
+                    "IsInPreview": true,
+                    "SupportsEmailNotifications": false
+                },
+                "enabled": true,
+                "sendEmailsToSubscriptionOwners": true,
+                "customEmails": []
+            }
+        },
+        {
+            "type": "microsoft.insights/components/ProactiveDetectionConfigs",
+            "apiVersion": "2018-05-01-preview",
+            "name": "[concat(parameters('components_MultiSoftwareFunctionApp07_name'), '/extension_securityextensionspackage')]",
+            "location": "northeurope",
+            "dependsOn": [
+                "[resourceId('microsoft.insights/components', parameters('components_MultiSoftwareFunctionApp07_name'))]"
+            ],
+            "properties": {
+                "ruleDefinitions": {
+                    "Name": "extension_securityextensionspackage",
+                    "DisplayName": "Potential security issue detected (preview)",
+                    "Description": "This detection rule automatically analyzes the telemetry generated by your application and detects potential security issues.",
+                    "HelpUrl": "https://github.com/Microsoft/ApplicationInsights-Home/blob/master/SmartDetection/application-security-detection-pack.md",
+                    "IsHidden": false,
+                    "IsEnabledByDefault": true,
+                    "IsInPreview": true,
+                    "SupportsEmailNotifications": false
+                },
+                "enabled": true,
+                "sendEmailsToSubscriptionOwners": true,
+                "customEmails": []
+            }
+        },
+        {
+            "type": "microsoft.insights/components/ProactiveDetectionConfigs",
+            "apiVersion": "2018-05-01-preview",
+            "name": "[concat(parameters('components_MultiSoftware07WebApp_name'), '/extension_traceseveritydetector')]",
+            "location": "northeurope",
+            "dependsOn": [
+                "[resourceId('microsoft.insights/components', parameters('components_MultiSoftware07WebApp_name'))]"
+            ],
+            "properties": {
+                "ruleDefinitions": {
+                    "Name": "extension_traceseveritydetector",
+                    "DisplayName": "Degradation in trace severity ratio (preview)",
+                    "Description": "This detection rule automatically analyzes the trace logs emitted from your application, and can warn you about unusual patterns in the severity of your trace telemetry.",
+                    "HelpUrl": "https://github.com/Microsoft/ApplicationInsights-Home/blob/master/SmartDetection/degradation-in-trace-severity-ratio.md",
+                    "IsHidden": false,
+                    "IsEnabledByDefault": true,
+                    "IsInPreview": true,
+                    "SupportsEmailNotifications": false
+                },
+                "enabled": true,
+                "sendEmailsToSubscriptionOwners": true,
+                "customEmails": []
+            }
+        },
+        {
+            "type": "microsoft.insights/components/ProactiveDetectionConfigs",
+            "apiVersion": "2018-05-01-preview",
+            "name": "[concat(parameters('components_MultiSoftwareFunctionApp07_name'), '/extension_traceseveritydetector')]",
+            "location": "northeurope",
+            "dependsOn": [
+                "[resourceId('microsoft.insights/components', parameters('components_MultiSoftwareFunctionApp07_name'))]"
+            ],
+            "properties": {
+                "ruleDefinitions": {
+                    "Name": "extension_traceseveritydetector",
+                    "DisplayName": "Degradation in trace severity ratio (preview)",
+                    "Description": "This detection rule automatically analyzes the trace logs emitted from your application, and can warn you about unusual patterns in the severity of your trace telemetry.",
+                    "HelpUrl": "https://github.com/Microsoft/ApplicationInsights-Home/blob/master/SmartDetection/degradation-in-trace-severity-ratio.md",
+                    "IsHidden": false,
+                    "IsEnabledByDefault": true,
+                    "IsInPreview": true,
+                    "SupportsEmailNotifications": false
+                },
+                "enabled": true,
+                "sendEmailsToSubscriptionOwners": true,
+                "customEmails": []
+            }
+        },
+        {
+            "type": "microsoft.insights/components/ProactiveDetectionConfigs",
+            "apiVersion": "2018-05-01-preview",
+            "name": "[concat(parameters('components_MultiSoftware07WebApp_name'), '/longdependencyduration')]",
+            "location": "northeurope",
+            "dependsOn": [
+                "[resourceId('microsoft.insights/components', parameters('components_MultiSoftware07WebApp_name'))]"
+            ],
+            "properties": {
+                "ruleDefinitions": {
+                    "Name": "longdependencyduration",
+                    "DisplayName": "Long dependency duration",
+                    "Description": "Smart Detection rules notify you of performance anomaly issues.",
+                    "HelpUrl": "https://docs.microsoft.com/en-us/azure/application-insights/app-insights-proactive-performance-diagnostics",
+                    "IsHidden": false,
+                    "IsEnabledByDefault": true,
+                    "IsInPreview": false,
+                    "SupportsEmailNotifications": true
+                },
+                "enabled": true,
+                "sendEmailsToSubscriptionOwners": true,
+                "customEmails": []
+            }
+        },
+        {
+            "type": "microsoft.insights/components/ProactiveDetectionConfigs",
+            "apiVersion": "2018-05-01-preview",
+            "name": "[concat(parameters('components_MultiSoftwareFunctionApp07_name'), '/longdependencyduration')]",
+            "location": "northeurope",
+            "dependsOn": [
+                "[resourceId('microsoft.insights/components', parameters('components_MultiSoftwareFunctionApp07_name'))]"
+            ],
+            "properties": {
+                "ruleDefinitions": {
+                    "Name": "longdependencyduration",
+                    "DisplayName": "Long dependency duration",
+                    "Description": "Smart Detection rules notify you of performance anomaly issues.",
+                    "HelpUrl": "https://docs.microsoft.com/en-us/azure/application-insights/app-insights-proactive-performance-diagnostics",
+                    "IsHidden": false,
+                    "IsEnabledByDefault": true,
+                    "IsInPreview": false,
+                    "SupportsEmailNotifications": true
+                },
+                "enabled": true,
+                "sendEmailsToSubscriptionOwners": true,
+                "customEmails": []
+            }
+        },
+        {
+            "type": "microsoft.insights/components/ProactiveDetectionConfigs",
+            "apiVersion": "2018-05-01-preview",
+            "name": "[concat(parameters('components_MultiSoftware07WebApp_name'), '/migrationToAlertRulesCompleted')]",
+            "location": "northeurope",
+            "dependsOn": [
+                "[resourceId('microsoft.insights/components', parameters('components_MultiSoftware07WebApp_name'))]"
+            ],
+            "properties": {
+                "ruleDefinitions": {
+                    "Name": "migrationToAlertRulesCompleted",
+                    "DisplayName": "Migration To Alert Rules Completed",
+                    "Description": "A configuration that controls the migration state of Smart Detection to Smart Alerts",
+                    "HelpUrl": "https://docs.microsoft.com/en-us/azure/application-insights/app-insights-proactive-performance-diagnostics",
+                    "IsHidden": true,
+                    "IsEnabledByDefault": false,
+                    "IsInPreview": true,
+                    "SupportsEmailNotifications": false
+                },
+                "enabled": false,
+                "sendEmailsToSubscriptionOwners": true,
+                "customEmails": []
+            }
+        },
+        {
+            "type": "microsoft.insights/components/ProactiveDetectionConfigs",
+            "apiVersion": "2018-05-01-preview",
+            "name": "[concat(parameters('components_MultiSoftwareFunctionApp07_name'), '/migrationToAlertRulesCompleted')]",
+            "location": "northeurope",
+            "dependsOn": [
+                "[resourceId('microsoft.insights/components', parameters('components_MultiSoftwareFunctionApp07_name'))]"
+            ],
+            "properties": {
+                "ruleDefinitions": {
+                    "Name": "migrationToAlertRulesCompleted",
+                    "DisplayName": "Migration To Alert Rules Completed",
+                    "Description": "A configuration that controls the migration state of Smart Detection to Smart Alerts",
+                    "HelpUrl": "https://docs.microsoft.com/en-us/azure/application-insights/app-insights-proactive-performance-diagnostics",
+                    "IsHidden": true,
+                    "IsEnabledByDefault": false,
+                    "IsInPreview": true,
+                    "SupportsEmailNotifications": false
+                },
+                "enabled": false,
+                "sendEmailsToSubscriptionOwners": true,
+                "customEmails": []
+            }
+        },
+        {
+            "type": "microsoft.insights/components/ProactiveDetectionConfigs",
+            "apiVersion": "2018-05-01-preview",
+            "name": "[concat(parameters('components_MultiSoftware07WebApp_name'), '/slowpageloadtime')]",
+            "location": "northeurope",
+            "dependsOn": [
+                "[resourceId('microsoft.insights/components', parameters('components_MultiSoftware07WebApp_name'))]"
+            ],
+            "properties": {
+                "ruleDefinitions": {
+                    "Name": "slowpageloadtime",
+                    "DisplayName": "Slow page load time",
+                    "Description": "Smart Detection rules notify you of performance anomaly issues.",
+                    "HelpUrl": "https://docs.microsoft.com/en-us/azure/application-insights/app-insights-proactive-performance-diagnostics",
+                    "IsHidden": false,
+                    "IsEnabledByDefault": true,
+                    "IsInPreview": false,
+                    "SupportsEmailNotifications": true
+                },
+                "enabled": true,
+                "sendEmailsToSubscriptionOwners": true,
+                "customEmails": []
+            }
+        },
+        {
+            "type": "microsoft.insights/components/ProactiveDetectionConfigs",
+            "apiVersion": "2018-05-01-preview",
+            "name": "[concat(parameters('components_MultiSoftwareFunctionApp07_name'), '/slowpageloadtime')]",
+            "location": "northeurope",
+            "dependsOn": [
+                "[resourceId('microsoft.insights/components', parameters('components_MultiSoftwareFunctionApp07_name'))]"
+            ],
+            "properties": {
+                "ruleDefinitions": {
+                    "Name": "slowpageloadtime",
+                    "DisplayName": "Slow page load time",
+                    "Description": "Smart Detection rules notify you of performance anomaly issues.",
+                    "HelpUrl": "https://docs.microsoft.com/en-us/azure/application-insights/app-insights-proactive-performance-diagnostics",
+                    "IsHidden": false,
+                    "IsEnabledByDefault": true,
+                    "IsInPreview": false,
+                    "SupportsEmailNotifications": true
+                },
+                "enabled": true,
+                "sendEmailsToSubscriptionOwners": true,
+                "customEmails": []
+            }
+        },
+        {
+            "type": "microsoft.insights/components/ProactiveDetectionConfigs",
+            "apiVersion": "2018-05-01-preview",
+            "name": "[concat(parameters('components_MultiSoftware07WebApp_name'), '/slowserverresponsetime')]",
+            "location": "northeurope",
+            "dependsOn": [
+                "[resourceId('microsoft.insights/components', parameters('components_MultiSoftware07WebApp_name'))]"
+            ],
+            "properties": {
+                "ruleDefinitions": {
+                    "Name": "slowserverresponsetime",
+                    "DisplayName": "Slow server response time",
+                    "Description": "Smart Detection rules notify you of performance anomaly issues.",
+                    "HelpUrl": "https://docs.microsoft.com/en-us/azure/application-insights/app-insights-proactive-performance-diagnostics",
+                    "IsHidden": false,
+                    "IsEnabledByDefault": true,
+                    "IsInPreview": false,
+                    "SupportsEmailNotifications": true
+                },
+                "enabled": true,
+                "sendEmailsToSubscriptionOwners": true,
+                "customEmails": []
+            }
+        },
+        {
+            "type": "microsoft.insights/components/ProactiveDetectionConfigs",
+            "apiVersion": "2018-05-01-preview",
+            "name": "[concat(parameters('components_MultiSoftwareFunctionApp07_name'), '/slowserverresponsetime')]",
+            "location": "northeurope",
+            "dependsOn": [
+                "[resourceId('microsoft.insights/components', parameters('components_MultiSoftwareFunctionApp07_name'))]"
+            ],
+            "properties": {
+                "ruleDefinitions": {
+                    "Name": "slowserverresponsetime",
+                    "DisplayName": "Slow server response time",
+                    "Description": "Smart Detection rules notify you of performance anomaly issues.",
+                    "HelpUrl": "https://docs.microsoft.com/en-us/azure/application-insights/app-insights-proactive-performance-diagnostics",
+                    "IsHidden": false,
+                    "IsEnabledByDefault": true,
+                    "IsInPreview": false,
+                    "SupportsEmailNotifications": true
+                },
+                "enabled": true,
+                "sendEmailsToSubscriptionOwners": true,
+                "customEmails": []
+            }
+        },
+        {
+            "type": "Microsoft.Network/virtualNetworks/subnets",
+            "apiVersion": "2024-01-01",
+            "name": "[concat(parameters('virtualNetworks_MultiSoftwareVNet07_name'), '/AzureFirewallManagementSubnet')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworks_MultiSoftwareVNet07_name'))]"
+            ],
+            "properties": {
+                "addressPrefixes": [
+                    "10.0.0.0/26"
+                ],
+                "delegations": [],
+                "privateEndpointNetworkPolicies": "Disabled",
+                "privateLinkServiceNetworkPolicies": "Enabled"
+            }
+        },
+        {
+            "type": "Microsoft.Network/virtualNetworks/subnets",
+            "apiVersion": "2024-01-01",
+            "name": "[concat(parameters('virtualNetworks_MultiSoftwareVNet07_name'), '/AzureFirewallSubnet')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworks_MultiSoftwareVNet07_name'))]"
+            ],
+            "properties": {
+                "addressPrefixes": [
+                    "10.0.0.64/26"
+                ],
+                "delegations": [],
+                "privateEndpointNetworkPolicies": "Disabled",
+                "privateLinkServiceNetworkPolicies": "Enabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/administrators",
+            "apiVersion": "2023-08-01-preview",
+            "name": "[concat(parameters('servers_multisoftware_server_07_name'), '/ActiveDirectory')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_multisoftware_server_07_name'))]"
+            ],
+            "properties": {
+                "administratorType": "ActiveDirectory",
+                "login": "programmeadministrator@athtech.gr",
+                "sid": "5ab956f0-2f0b-43c5-adcf-9e62dcd6c4cf",
+                "tenantId": "b1732512-60e5-48fb-92e8-8d6902ac1349"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/advancedThreatProtectionSettings",
+            "apiVersion": "2023-08-01-preview",
+            "name": "[concat(parameters('servers_multisoftware_server_07_name'), '/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_multisoftware_server_07_name'))]"
+            ],
+            "properties": {
+                "state": "Enabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/advisors",
+            "apiVersion": "2014-04-01",
+            "name": "[concat(parameters('servers_multisoftware_server_07_name'), '/CreateIndex')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_multisoftware_server_07_name'))]"
+            ],
+            "properties": {
+                "autoExecuteValue": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/advisors",
+            "apiVersion": "2014-04-01",
+            "name": "[concat(parameters('servers_multisoftware_server_07_name'), '/DbParameterization')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_multisoftware_server_07_name'))]"
+            ],
+            "properties": {
+                "autoExecuteValue": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/advisors",
+            "apiVersion": "2014-04-01",
+            "name": "[concat(parameters('servers_multisoftware_server_07_name'), '/DefragmentIndex')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_multisoftware_server_07_name'))]"
+            ],
+            "properties": {
+                "autoExecuteValue": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/advisors",
+            "apiVersion": "2014-04-01",
+            "name": "[concat(parameters('servers_multisoftware_server_07_name'), '/DropIndex')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_multisoftware_server_07_name'))]"
+            ],
+            "properties": {
+                "autoExecuteValue": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/advisors",
+            "apiVersion": "2014-04-01",
+            "name": "[concat(parameters('servers_multisoftware_server_07_name'), '/ForceLastGoodPlan')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_multisoftware_server_07_name'))]"
+            ],
+            "properties": {
+                "autoExecuteValue": "Enabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/auditingPolicies",
+            "apiVersion": "2014-04-01",
+            "name": "[concat(parameters('servers_multisoftware_server_07_name'), '/Default')]",
+            "location": "North Europe",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_multisoftware_server_07_name'))]"
+            ],
+            "properties": {
+                "auditingState": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/auditingSettings",
+            "apiVersion": "2023-08-01-preview",
+            "name": "[concat(parameters('servers_multisoftware_server_07_name'), '/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_multisoftware_server_07_name'))]"
+            ],
+            "properties": {
+                "retentionDays": 0,
+                "auditActionsAndGroups": [],
+                "isStorageSecondaryKeyInUse": false,
+                "isAzureMonitorTargetEnabled": false,
+                "isManagedIdentityInUse": false,
+                "state": "Disabled",
+                "storageAccountSubscriptionId": "00000000-0000-0000-0000-000000000000"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/azureADOnlyAuthentications",
+            "apiVersion": "2023-08-01-preview",
+            "name": "[concat(parameters('servers_multisoftware_server_07_name'), '/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_multisoftware_server_07_name'))]"
+            ],
+            "properties": {
+                "azureADOnlyAuthentication": false
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/connectionPolicies",
+            "apiVersion": "2023-08-01-preview",
+            "name": "[concat(parameters('servers_multisoftware_server_07_name'), '/default')]",
+            "location": "northeurope",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_multisoftware_server_07_name'))]"
+            ],
+            "properties": {
+                "connectionType": "Default"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases",
+            "apiVersion": "2023-08-01-preview",
+            "name": "[concat(parameters('servers_multisoftware_server_07_name'), '/MultiSoftwareDB07')]",
+            "location": "northeurope",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_multisoftware_server_07_name'))]"
+            ],
+            "tags": {
+                "MultiSoftware07": "production"
+            },
+            "sku": {
+                "name": "GP_Gen5",
+                "tier": "GeneralPurpose",
+                "family": "Gen5",
+                "capacity": 2
+            },
+            "kind": "v12.0,user,vcore",
+            "properties": {
+                "collation": "SQL_Latin1_General_CP1_CI_AS",
+                "maxSizeBytes": 34359738368,
+                "catalogCollation": "SQL_Latin1_General_CP1_CI_AS",
+                "zoneRedundant": false,
+                "licenseType": "LicenseIncluded",
+                "readScale": "Disabled",
+                "requestedBackupStorageRedundancy": "Geo",
+                "maintenanceConfigurationId": "/subscriptions/b44c29a2-28d7-496c-9428-61edd158e630/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_Default",
+                "isLedgerOn": false,
+                "availabilityZone": "NoPreference"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/advancedThreatProtectionSettings",
+            "apiVersion": "2023-08-01-preview",
+            "name": "[concat(parameters('servers_multisoftware_server_07_name'), '/master/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_multisoftware_server_07_name'))]"
+            ],
+            "properties": {
+                "state": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/auditingPolicies",
+            "apiVersion": "2014-04-01",
+            "name": "[concat(parameters('servers_multisoftware_server_07_name'), '/master/Default')]",
+            "location": "North Europe",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_multisoftware_server_07_name'))]"
+            ],
+            "properties": {
+                "auditingState": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/auditingSettings",
+            "apiVersion": "2023-08-01-preview",
+            "name": "[concat(parameters('servers_multisoftware_server_07_name'), '/master/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_multisoftware_server_07_name'))]"
+            ],
+            "properties": {
+                "retentionDays": 0,
+                "isAzureMonitorTargetEnabled": false,
+                "state": "Disabled",
+                "storageAccountSubscriptionId": "00000000-0000-0000-0000-000000000000"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/extendedAuditingSettings",
+            "apiVersion": "2023-08-01-preview",
+            "name": "[concat(parameters('servers_multisoftware_server_07_name'), '/master/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_multisoftware_server_07_name'))]"
+            ],
+            "properties": {
+                "retentionDays": 0,
+                "isAzureMonitorTargetEnabled": false,
+                "state": "Disabled",
+                "storageAccountSubscriptionId": "00000000-0000-0000-0000-000000000000"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/geoBackupPolicies",
+            "apiVersion": "2023-08-01-preview",
+            "name": "[concat(parameters('servers_multisoftware_server_07_name'), '/master/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_multisoftware_server_07_name'))]"
+            ],
+            "properties": {
+                "state": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/ledgerDigestUploads",
+            "apiVersion": "2023-08-01-preview",
+            "name": "[concat(parameters('servers_multisoftware_server_07_name'), '/master/Current')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_multisoftware_server_07_name'))]"
+            ],
+            "properties": {}
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/securityAlertPolicies",
+            "apiVersion": "2023-08-01-preview",
+            "name": "[concat(parameters('servers_multisoftware_server_07_name'), '/master/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_multisoftware_server_07_name'))]"
+            ],
+            "properties": {
+                "state": "Disabled",
+                "disabledAlerts": [
+                    ""
+                ],
+                "emailAddresses": [
+                    ""
+                ],
+                "emailAccountAdmins": false,
+                "retentionDays": 0
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/transparentDataEncryption",
+            "apiVersion": "2023-08-01-preview",
+            "name": "[concat(parameters('servers_multisoftware_server_07_name'), '/master/Current')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_multisoftware_server_07_name'))]"
+            ],
+            "properties": {
+                "state": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/vulnerabilityAssessments",
+            "apiVersion": "2023-08-01-preview",
+            "name": "[concat(parameters('servers_multisoftware_server_07_name'), '/master/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_multisoftware_server_07_name'))]"
+            ],
+            "properties": {
+                "recurringScans": {
+                    "isEnabled": false,
+                    "emailSubscriptionAdmins": true,
+                    "emails": []
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/devOpsAuditingSettings",
+            "apiVersion": "2023-08-01-preview",
+            "name": "[concat(parameters('servers_multisoftware_server_07_name'), '/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_multisoftware_server_07_name'))]"
+            ],
+            "properties": {
+                "isAzureMonitorTargetEnabled": false,
+                "isManagedIdentityInUse": false,
+                "state": "Disabled",
+                "storageAccountSubscriptionId": "00000000-0000-0000-0000-000000000000"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/encryptionProtector",
+            "apiVersion": "2023-08-01-preview",
+            "name": "[concat(parameters('servers_multisoftware_server_07_name'), '/current')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_multisoftware_server_07_name'))]"
+            ],
+            "kind": "servicemanaged",
+            "properties": {
+                "serverKeyName": "ServiceManaged",
+                "serverKeyType": "ServiceManaged",
+                "autoRotationEnabled": false
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/extendedAuditingSettings",
+            "apiVersion": "2023-08-01-preview",
+            "name": "[concat(parameters('servers_multisoftware_server_07_name'), '/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_multisoftware_server_07_name'))]"
+            ],
+            "properties": {
+                "retentionDays": 0,
+                "auditActionsAndGroups": [],
+                "isStorageSecondaryKeyInUse": false,
+                "isAzureMonitorTargetEnabled": false,
+                "isManagedIdentityInUse": false,
+                "state": "Disabled",
+                "storageAccountSubscriptionId": "00000000-0000-0000-0000-000000000000"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/keys",
+            "apiVersion": "2023-08-01-preview",
+            "name": "[concat(parameters('servers_multisoftware_server_07_name'), '/ServiceManaged')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_multisoftware_server_07_name'))]"
+            ],
+            "kind": "servicemanaged",
+            "properties": {
+                "serverKeyType": "ServiceManaged"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/securityAlertPolicies",
+            "apiVersion": "2023-08-01-preview",
+            "name": "[concat(parameters('servers_multisoftware_server_07_name'), '/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_multisoftware_server_07_name'))]"
+            ],
+            "properties": {
+                "state": "Enabled",
+                "disabledAlerts": [
+                    ""
+                ],
+                "emailAddresses": [
+                    ""
+                ],
+                "emailAccountAdmins": false,
+                "retentionDays": 0
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/sqlVulnerabilityAssessments",
+            "apiVersion": "2023-08-01-preview",
+            "name": "[concat(parameters('servers_multisoftware_server_07_name'), '/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_multisoftware_server_07_name'))]"
+            ],
+            "properties": {
+                "state": "Enabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/vulnerabilityAssessments",
+            "apiVersion": "2023-08-01-preview",
+            "name": "[concat(parameters('servers_multisoftware_server_07_name'), '/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_multisoftware_server_07_name'))]"
+            ],
+            "properties": {
+                "recurringScans": {
+                    "isEnabled": false,
+                    "emailSubscriptionAdmins": true
+                },
+                "storageContainerPath": "[parameters('vulnerabilityAssessments_Default_storageContainerPath')]"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices",
+            "apiVersion": "2023-05-01",
+            "name": "[concat(parameters('storageAccounts_multisoftwarestorage07_name'), '/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_multisoftwarestorage07_name'))]"
+            ],
+            "sku": {
+                "name": "Standard_RAGRS",
+                "tier": "Standard"
+            },
+            "properties": {
+                "containerDeleteRetentionPolicy": {
+                    "enabled": true,
+                    "days": 7
+                },
+                "cors": {
+                    "corsRules": []
+                },
+                "deleteRetentionPolicy": {
+                    "allowPermanentDelete": false,
+                    "enabled": true,
+                    "days": 7
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/fileServices",
+            "apiVersion": "2023-05-01",
+            "name": "[concat(parameters('storageAccounts_multisoftwarestorage07_name'), '/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_multisoftwarestorage07_name'))]"
+            ],
+            "sku": {
+                "name": "Standard_RAGRS",
+                "tier": "Standard"
+            },
+            "properties": {
+                "protocolSettings": {
+                    "smb": {}
+                },
+                "cors": {
+                    "corsRules": []
+                },
+                "shareDeleteRetentionPolicy": {
+                    "enabled": true,
+                    "days": 7
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/queueServices",
+            "apiVersion": "2023-05-01",
+            "name": "[concat(parameters('storageAccounts_multisoftwarestorage07_name'), '/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_multisoftwarestorage07_name'))]"
+            ],
+            "properties": {
+                "cors": {
+                    "corsRules": []
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/tableServices",
+            "apiVersion": "2023-05-01",
+            "name": "[concat(parameters('storageAccounts_multisoftwarestorage07_name'), '/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_multisoftwarestorage07_name'))]"
+            ],
+            "properties": {
+                "cors": {
+                    "corsRules": []
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites",
+            "apiVersion": "2023-12-01",
+            "name": "[parameters('sites_MultiSoftware07WebApp_name')]",
+            "location": "North Europe",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_ASP_MultiSoftwareRSG07_9dc7_name'))]"
+            ],
+            "tags": {
+                "MultiSoftware07": "production"
+            },
+            "kind": "app",
+            "properties": {
+                "enabled": true,
+                "hostNameSslStates": [
+                    {
+                        "name": "multisoftware07webapp-cpgaf7g8fnbkgagd.northeurope-01.azurewebsites.net",
+                        "sslState": "Disabled",
+                        "hostType": "Standard"
+                    },
+                    {
+                        "name": "multisoftware07webapp-cpgaf7g8fnbkgagd.scm.northeurope-01.azurewebsites.net",
+                        "sslState": "Disabled",
+                        "hostType": "Repository"
+                    }
+                ],
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_ASP_MultiSoftwareRSG07_9dc7_name'))]",
+                "reserved": false,
+                "isXenon": false,
+                "hyperV": false,
+                "dnsConfiguration": {},
+                "vnetRouteAllEnabled": false,
+                "vnetImagePullEnabled": false,
+                "vnetContentShareEnabled": false,
+                "siteConfig": {
+                    "numberOfWorkers": 1,
+                    "acrUseManagedIdentityCreds": false,
+                    "alwaysOn": true,
+                    "http20Enabled": false,
+                    "functionAppScaleLimit": 0,
+                    "minimumElasticInstanceCount": 0
+                },
+                "scmSiteAlsoStopped": false,
+                "clientAffinityEnabled": true,
+                "clientCertEnabled": false,
+                "clientCertMode": "Required",
+                "hostNamesDisabled": false,
+                "vnetBackupRestoreEnabled": false,
+                "customDomainVerificationId": "8249CED8A99D68857F1352765E1387E8FF753D4C8517C07DA65F3811FDC0FF59",
+                "containerSize": 0,
+                "dailyMemoryTimeQuota": 0,
+                "httpsOnly": true,
+                "redundancyMode": "None",
+                "publicNetworkAccess": "Enabled",
+                "storageAccountRequired": false,
+                "keyVaultReferenceIdentity": "SystemAssigned"
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites",
+            "apiVersion": "2023-12-01",
+            "name": "[parameters('sites_MultiSoftwareFunctionApp07_name')]",
+            "location": "North Europe",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_ASP_MultiSoftwareRSG07_9dc7_name'))]"
+            ],
+            "tags": {
+                "MultiSoftware07": "production",
+                "hidden-link: /app-insights-resource-id": "/subscriptions/b44c29a2-28d7-496c-9428-61edd158e630/resourceGroups/MultiSoftwareRSG07/providers/Microsoft.Insights/components/MultiSoftwareFunctionApp07"
+            },
+            "kind": "functionapp",
+            "properties": {
+                "enabled": true,
+                "hostNameSslStates": [
+                    {
+                        "name": "multisoftwarefunctionapp07.azurewebsites.net",
+                        "sslState": "Disabled",
+                        "hostType": "Standard"
+                    },
+                    {
+                        "name": "multisoftwarefunctionapp07.scm.azurewebsites.net",
+                        "sslState": "Disabled",
+                        "hostType": "Repository"
+                    }
+                ],
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_ASP_MultiSoftwareRSG07_9dc7_name'))]",
+                "reserved": false,
+                "isXenon": false,
+                "hyperV": false,
+                "dnsConfiguration": {},
+                "vnetRouteAllEnabled": false,
+                "vnetImagePullEnabled": false,
+                "vnetContentShareEnabled": false,
+                "siteConfig": {
+                    "numberOfWorkers": 1,
+                    "acrUseManagedIdentityCreds": false,
+                    "alwaysOn": true,
+                    "http20Enabled": false,
+                    "functionAppScaleLimit": 0,
+                    "minimumElasticInstanceCount": 0
+                },
+                "scmSiteAlsoStopped": false,
+                "clientAffinityEnabled": false,
+                "clientCertEnabled": false,
+                "clientCertMode": "Required",
+                "hostNamesDisabled": false,
+                "vnetBackupRestoreEnabled": false,
+                "customDomainVerificationId": "8249CED8A99D68857F1352765E1387E8FF753D4C8517C07DA65F3811FDC0FF59",
+                "containerSize": 1536,
+                "dailyMemoryTimeQuota": 0,
+                "httpsOnly": true,
+                "redundancyMode": "None",
+                "publicNetworkAccess": "Enabled",
+                "storageAccountRequired": false,
+                "keyVaultReferenceIdentity": "SystemAssigned"
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/basicPublishingCredentialsPolicies",
+            "apiVersion": "2023-12-01",
+            "name": "[concat(parameters('sites_MultiSoftware07WebApp_name'), '/ftp')]",
+            "location": "North Europe",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_MultiSoftware07WebApp_name'))]"
+            ],
+            "tags": {
+                "MultiSoftware07": "production"
+            },
+            "properties": {
+                "allow": true
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/basicPublishingCredentialsPolicies",
+            "apiVersion": "2023-12-01",
+            "name": "[concat(parameters('sites_MultiSoftwareFunctionApp07_name'), '/ftp')]",
+            "location": "North Europe",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_MultiSoftwareFunctionApp07_name'))]"
+            ],
+            "tags": {
+                "MultiSoftware07": "production",
+                "hidden-link: /app-insights-resource-id": "/subscriptions/b44c29a2-28d7-496c-9428-61edd158e630/resourceGroups/MultiSoftwareRSG07/providers/Microsoft.Insights/components/MultiSoftwareFunctionApp07"
+            },
+            "properties": {
+                "allow": true
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/basicPublishingCredentialsPolicies",
+            "apiVersion": "2023-12-01",
+            "name": "[concat(parameters('sites_MultiSoftware07WebApp_name'), '/scm')]",
+            "location": "North Europe",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_MultiSoftware07WebApp_name'))]"
+            ],
+            "tags": {
+                "MultiSoftware07": "production"
+            },
+            "properties": {
+                "allow": true
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/basicPublishingCredentialsPolicies",
+            "apiVersion": "2023-12-01",
+            "name": "[concat(parameters('sites_MultiSoftwareFunctionApp07_name'), '/scm')]",
+            "location": "North Europe",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_MultiSoftwareFunctionApp07_name'))]"
+            ],
+            "tags": {
+                "MultiSoftware07": "production",
+                "hidden-link: /app-insights-resource-id": "/subscriptions/b44c29a2-28d7-496c-9428-61edd158e630/resourceGroups/MultiSoftwareRSG07/providers/Microsoft.Insights/components/MultiSoftwareFunctionApp07"
+            },
+            "properties": {
+                "allow": true
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/config",
+            "apiVersion": "2023-12-01",
+            "name": "[concat(parameters('sites_MultiSoftware07WebApp_name'), '/web')]",
+            "location": "North Europe",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_MultiSoftware07WebApp_name'))]"
+            ],
+            "tags": {
+                "MultiSoftware07": "production"
+            },
+            "properties": {
+                "numberOfWorkers": 1,
+                "defaultDocuments": [
+                    "Default.htm",
+                    "Default.html",
+                    "Default.asp",
+                    "index.htm",
+                    "index.html",
+                    "iisstart.htm",
+                    "default.aspx",
+                    "index.php",
+                    "hostingstart.html"
+                ],
+                "netFrameworkVersion": "v8.0",
+                "requestTracingEnabled": false,
+                "remoteDebuggingEnabled": false,
+                "httpLoggingEnabled": false,
+                "acrUseManagedIdentityCreds": false,
+                "logsDirectorySizeLimit": 35,
+                "detailedErrorLoggingEnabled": false,
+                "publishingUsername": "$MultiSoftware07WebApp",
+                "scmType": "None",
+                "use32BitWorkerProcess": true,
+                "webSocketsEnabled": false,
+                "alwaysOn": true,
+                "managedPipelineMode": "Integrated",
+                "virtualApplications": [
+                    {
+                        "virtualPath": "/",
+                        "physicalPath": "site\\wwwroot",
+                        "preloadEnabled": true
+                    }
+                ],
+                "loadBalancing": "LeastRequests",
+                "experiments": {
+                    "rampUpRules": []
+                },
+                "autoHealEnabled": false,
+                "vnetRouteAllEnabled": false,
+                "vnetPrivatePortsCount": 0,
+                "publicNetworkAccess": "Enabled",
+                "localMySqlEnabled": false,
+                "ipSecurityRestrictions": [
+                    {
+                        "ipAddress": "Any",
+                        "action": "Allow",
+                        "priority": 2147483647,
+                        "name": "Allow all",
+                        "description": "Allow all access"
+                    }
+                ],
+                "scmIpSecurityRestrictions": [
+                    {
+                        "ipAddress": "Any",
+                        "action": "Allow",
+                        "priority": 2147483647,
+                        "name": "Allow all",
+                        "description": "Allow all access"
+                    }
+                ],
+                "scmIpSecurityRestrictionsUseMain": false,
+                "http20Enabled": false,
+                "minTlsVersion": "1.2",
+                "scmMinTlsVersion": "1.2",
+                "ftpsState": "FtpsOnly",
+                "preWarmedInstanceCount": 0,
+                "elasticWebAppScaleLimit": 0,
+                "functionsRuntimeScaleMonitoringEnabled": false,
+                "minimumElasticInstanceCount": 0,
+                "azureStorageAccounts": {}
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/config",
+            "apiVersion": "2023-12-01",
+            "name": "[concat(parameters('sites_MultiSoftwareFunctionApp07_name'), '/web')]",
+            "location": "North Europe",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_MultiSoftwareFunctionApp07_name'))]"
+            ],
+            "tags": {
+                "MultiSoftware07": "production",
+                "hidden-link: /app-insights-resource-id": "/subscriptions/b44c29a2-28d7-496c-9428-61edd158e630/resourceGroups/MultiSoftwareRSG07/providers/Microsoft.Insights/components/MultiSoftwareFunctionApp07"
+            },
+            "properties": {
+                "numberOfWorkers": 1,
+                "defaultDocuments": [
+                    "Default.htm",
+                    "Default.html",
+                    "Default.asp",
+                    "index.htm",
+                    "index.html",
+                    "iisstart.htm",
+                    "default.aspx",
+                    "index.php"
+                ],
+                "netFrameworkVersion": "v8.0",
+                "requestTracingEnabled": false,
+                "remoteDebuggingEnabled": false,
+                "httpLoggingEnabled": false,
+                "acrUseManagedIdentityCreds": false,
+                "logsDirectorySizeLimit": 35,
+                "detailedErrorLoggingEnabled": false,
+                "publishingUsername": "$MultiSoftwareFunctionApp07",
+                "scmType": "None",
+                "use32BitWorkerProcess": false,
+                "webSocketsEnabled": false,
+                "alwaysOn": true,
+                "managedPipelineMode": "Integrated",
+                "virtualApplications": [
+                    {
+                        "virtualPath": "/",
+                        "physicalPath": "site\\wwwroot",
+                        "preloadEnabled": true
+                    }
+                ],
+                "loadBalancing": "LeastRequests",
+                "experiments": {
+                    "rampUpRules": []
+                },
+                "autoHealEnabled": false,
+                "vnetRouteAllEnabled": false,
+                "vnetPrivatePortsCount": 0,
+                "publicNetworkAccess": "Enabled",
+                "cors": {
+                    "allowedOrigins": [
+                        "https://portal.azure.com"
+                    ],
+                    "supportCredentials": false
+                },
+                "localMySqlEnabled": false,
+                "ipSecurityRestrictions": [
+                    {
+                        "ipAddress": "Any",
+                        "action": "Allow",
+                        "priority": 2147483647,
+                        "name": "Allow all",
+                        "description": "Allow all access"
+                    }
+                ],
+                "scmIpSecurityRestrictions": [
+                    {
+                        "ipAddress": "Any",
+                        "action": "Allow",
+                        "priority": 2147483647,
+                        "name": "Allow all",
+                        "description": "Allow all access"
+                    }
+                ],
+                "scmIpSecurityRestrictionsUseMain": false,
+                "http20Enabled": false,
+                "minTlsVersion": "1.2",
+                "scmMinTlsVersion": "1.2",
+                "ftpsState": "FtpsOnly",
+                "preWarmedInstanceCount": 0,
+                "functionAppScaleLimit": 0,
+                "functionsRuntimeScaleMonitoringEnabled": false,
+                "minimumElasticInstanceCount": 0,
+                "azureStorageAccounts": {}
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/hostNameBindings",
+            "apiVersion": "2023-12-01",
+            "name": "[concat(parameters('sites_MultiSoftware07WebApp_name'), '/', parameters('sites_MultiSoftware07WebApp_name'), '-cpgaf7g8fnbkgagd.northeurope-01.azurewebsites.net')]",
+            "location": "North Europe",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_MultiSoftware07WebApp_name'))]"
+            ],
+            "properties": {
+                "siteName": "MultiSoftware07WebApp",
+                "hostNameType": "Verified"
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites/hostNameBindings",
+            "apiVersion": "2023-12-01",
+            "name": "[concat(parameters('sites_MultiSoftwareFunctionApp07_name'), '/', parameters('sites_MultiSoftwareFunctionApp07_name'), '.azurewebsites.net')]",
+            "location": "North Europe",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/sites', parameters('sites_MultiSoftwareFunctionApp07_name'))]"
+            ],
+            "properties": {
+                "siteName": "MultiSoftwareFunctionApp07",
+                "hostNameType": "Verified"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/advancedThreatProtectionSettings",
+            "apiVersion": "2023-08-01-preview",
+            "name": "[concat(parameters('servers_multisoftware_server_07_name'), '/MultiSoftwareDB07/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_multisoftware_server_07_name'), 'MultiSoftwareDB07')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_multisoftware_server_07_name'))]"
+            ],
+            "properties": {
+                "state": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/advisors",
+            "apiVersion": "2014-04-01",
+            "name": "[concat(parameters('servers_multisoftware_server_07_name'), '/MultiSoftwareDB07/CreateIndex')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_multisoftware_server_07_name'), 'MultiSoftwareDB07')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_multisoftware_server_07_name'))]"
+            ],
+            "properties": {
+                "autoExecuteValue": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/advisors",
+            "apiVersion": "2014-04-01",
+            "name": "[concat(parameters('servers_multisoftware_server_07_name'), '/MultiSoftwareDB07/DbParameterization')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_multisoftware_server_07_name'), 'MultiSoftwareDB07')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_multisoftware_server_07_name'))]"
+            ],
+            "properties": {
+                "autoExecuteValue": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/advisors",
+            "apiVersion": "2014-04-01",
+            "name": "[concat(parameters('servers_multisoftware_server_07_name'), '/MultiSoftwareDB07/DefragmentIndex')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_multisoftware_server_07_name'), 'MultiSoftwareDB07')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_multisoftware_server_07_name'))]"
+            ],
+            "properties": {
+                "autoExecuteValue": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/advisors",
+            "apiVersion": "2014-04-01",
+            "name": "[concat(parameters('servers_multisoftware_server_07_name'), '/MultiSoftwareDB07/DropIndex')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_multisoftware_server_07_name'), 'MultiSoftwareDB07')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_multisoftware_server_07_name'))]"
+            ],
+            "properties": {
+                "autoExecuteValue": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/advisors",
+            "apiVersion": "2014-04-01",
+            "name": "[concat(parameters('servers_multisoftware_server_07_name'), '/MultiSoftwareDB07/ForceLastGoodPlan')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_multisoftware_server_07_name'), 'MultiSoftwareDB07')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_multisoftware_server_07_name'))]"
+            ],
+            "properties": {
+                "autoExecuteValue": "Enabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/auditingPolicies",
+            "apiVersion": "2014-04-01",
+            "name": "[concat(parameters('servers_multisoftware_server_07_name'), '/MultiSoftwareDB07/Default')]",
+            "location": "North Europe",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_multisoftware_server_07_name'), 'MultiSoftwareDB07')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_multisoftware_server_07_name'))]"
+            ],
+            "properties": {
+                "auditingState": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/auditingSettings",
+            "apiVersion": "2023-08-01-preview",
+            "name": "[concat(parameters('servers_multisoftware_server_07_name'), '/MultiSoftwareDB07/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_multisoftware_server_07_name'), 'MultiSoftwareDB07')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_multisoftware_server_07_name'))]"
+            ],
+            "properties": {
+                "retentionDays": 0,
+                "isAzureMonitorTargetEnabled": false,
+                "state": "Disabled",
+                "storageAccountSubscriptionId": "00000000-0000-0000-0000-000000000000"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/backupLongTermRetentionPolicies",
+            "apiVersion": "2023-08-01-preview",
+            "name": "[concat(parameters('servers_multisoftware_server_07_name'), '/MultiSoftwareDB07/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_multisoftware_server_07_name'), 'MultiSoftwareDB07')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_multisoftware_server_07_name'))]"
+            ],
+            "properties": {
+                "weeklyRetention": "PT0S",
+                "monthlyRetention": "PT0S",
+                "yearlyRetention": "PT0S",
+                "weekOfYear": 0
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/backupShortTermRetentionPolicies",
+            "apiVersion": "2023-08-01-preview",
+            "name": "[concat(parameters('servers_multisoftware_server_07_name'), '/MultiSoftwareDB07/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_multisoftware_server_07_name'), 'MultiSoftwareDB07')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_multisoftware_server_07_name'))]"
+            ],
+            "properties": {
+                "retentionDays": 7,
+                "diffBackupIntervalInHours": 12
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/extendedAuditingSettings",
+            "apiVersion": "2023-08-01-preview",
+            "name": "[concat(parameters('servers_multisoftware_server_07_name'), '/MultiSoftwareDB07/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_multisoftware_server_07_name'), 'MultiSoftwareDB07')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_multisoftware_server_07_name'))]"
+            ],
+            "properties": {
+                "retentionDays": 0,
+                "isAzureMonitorTargetEnabled": false,
+                "state": "Disabled",
+                "storageAccountSubscriptionId": "00000000-0000-0000-0000-000000000000"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/geoBackupPolicies",
+            "apiVersion": "2023-08-01-preview",
+            "name": "[concat(parameters('servers_multisoftware_server_07_name'), '/MultiSoftwareDB07/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_multisoftware_server_07_name'), 'MultiSoftwareDB07')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_multisoftware_server_07_name'))]"
+            ],
+            "properties": {
+                "state": "Enabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/ledgerDigestUploads",
+            "apiVersion": "2023-08-01-preview",
+            "name": "[concat(parameters('servers_multisoftware_server_07_name'), '/MultiSoftwareDB07/Current')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_multisoftware_server_07_name'), 'MultiSoftwareDB07')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_multisoftware_server_07_name'))]"
+            ],
+            "properties": {}
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/securityAlertPolicies",
+            "apiVersion": "2023-08-01-preview",
+            "name": "[concat(parameters('servers_multisoftware_server_07_name'), '/MultiSoftwareDB07/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_multisoftware_server_07_name'), 'MultiSoftwareDB07')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_multisoftware_server_07_name'))]"
+            ],
+            "properties": {
+                "state": "Disabled",
+                "disabledAlerts": [
+                    ""
+                ],
+                "emailAddresses": [
+                    ""
+                ],
+                "emailAccountAdmins": false,
+                "retentionDays": 0
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/transparentDataEncryption",
+            "apiVersion": "2023-08-01-preview",
+            "name": "[concat(parameters('servers_multisoftware_server_07_name'), '/MultiSoftwareDB07/Current')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_multisoftware_server_07_name'), 'MultiSoftwareDB07')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_multisoftware_server_07_name'))]"
+            ],
+            "properties": {
+                "state": "Enabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/databases/vulnerabilityAssessments",
+            "apiVersion": "2023-08-01-preview",
+            "name": "[concat(parameters('servers_multisoftware_server_07_name'), '/MultiSoftwareDB07/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_multisoftware_server_07_name'), 'MultiSoftwareDB07')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('servers_multisoftware_server_07_name'))]"
+            ],
+            "properties": {
+                "recurringScans": {
+                    "isEnabled": false,
+                    "emailSubscriptionAdmins": true,
+                    "emails": []
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+            "apiVersion": "2023-05-01",
+            "name": "[concat(parameters('storageAccounts_multisoftwarestorage07_name'), '/default/azure-webjobs-hosts')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_multisoftwarestorage07_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_multisoftwarestorage07_name'))]"
+            ],
+            "properties": {
+                "immutableStorageWithVersioning": {
+                    "enabled": false
+                },
+                "defaultEncryptionScope": "$account-encryption-key",
+                "denyEncryptionScopeOverride": false,
+                "publicAccess": "None"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+            "apiVersion": "2023-05-01",
+            "name": "[concat(parameters('storageAccounts_multisoftwarestorage07_name'), '/default/azure-webjobs-secrets')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_multisoftwarestorage07_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_multisoftwarestorage07_name'))]"
+            ],
+            "properties": {
+                "immutableStorageWithVersioning": {
+                    "enabled": false
+                },
+                "defaultEncryptionScope": "$account-encryption-key",
+                "denyEncryptionScopeOverride": false,
+                "publicAccess": "None"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+            "apiVersion": "2023-05-01",
+            "name": "[concat(parameters('storageAccounts_multisoftwarestorage07_name'), '/default/insights-logs-appmetrics')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_multisoftwarestorage07_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_multisoftwarestorage07_name'))]"
+            ],
+            "properties": {
+                "immutableStorageWithVersioning": {
+                    "enabled": false
+                },
+                "defaultEncryptionScope": "$account-encryption-key",
+                "denyEncryptionScopeOverride": false,
+                "publicAccess": "None"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+            "apiVersion": "2023-05-01",
+            "name": "[concat(parameters('storageAccounts_multisoftwarestorage07_name'), '/default/insights-logs-appperformancecounters')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_multisoftwarestorage07_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_multisoftwarestorage07_name'))]"
+            ],
+            "properties": {
+                "immutableStorageWithVersioning": {
+                    "enabled": false
+                },
+                "defaultEncryptionScope": "$account-encryption-key",
+                "denyEncryptionScopeOverride": false,
+                "publicAccess": "None"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+            "apiVersion": "2023-05-01",
+            "name": "[concat(parameters('storageAccounts_multisoftwarestorage07_name'), '/default/insights-logs-apprequests')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_multisoftwarestorage07_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_multisoftwarestorage07_name'))]"
+            ],
+            "properties": {
+                "immutableStorageWithVersioning": {
+                    "enabled": false
+                },
+                "defaultEncryptionScope": "$account-encryption-key",
+                "denyEncryptionScopeOverride": false,
+                "publicAccess": "None"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+            "apiVersion": "2023-05-01",
+            "name": "[concat(parameters('storageAccounts_multisoftwarestorage07_name'), '/default/insights-logs-appserviceantivirusscanauditlogs')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_multisoftwarestorage07_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_multisoftwarestorage07_name'))]"
+            ],
+            "properties": {
+                "immutableStorageWithVersioning": {
+                    "enabled": false
+                },
+                "defaultEncryptionScope": "$account-encryption-key",
+                "denyEncryptionScopeOverride": false,
+                "publicAccess": "None"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+            "apiVersion": "2023-05-01",
+            "name": "[concat(parameters('storageAccounts_multisoftwarestorage07_name'), '/default/insights-logs-appservicehttplogs')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_multisoftwarestorage07_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_multisoftwarestorage07_name'))]"
+            ],
+            "properties": {
+                "immutableStorageWithVersioning": {
+                    "enabled": false
+                },
+                "defaultEncryptionScope": "$account-encryption-key",
+                "denyEncryptionScopeOverride": false,
+                "publicAccess": "None"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+            "apiVersion": "2023-05-01",
+            "name": "[concat(parameters('storageAccounts_multisoftwarestorage07_name'), '/default/insights-logs-apptraces')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_multisoftwarestorage07_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_multisoftwarestorage07_name'))]"
+            ],
+            "properties": {
+                "immutableStorageWithVersioning": {
+                    "enabled": false
+                },
+                "defaultEncryptionScope": "$account-encryption-key",
+                "denyEncryptionScopeOverride": false,
+                "publicAccess": "None"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+            "apiVersion": "2023-05-01",
+            "name": "[concat(parameters('storageAccounts_multisoftwarestorage07_name'), '/default/insights-logs-auditevent')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_multisoftwarestorage07_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_multisoftwarestorage07_name'))]"
+            ],
+            "properties": {
+                "immutableStorageWithVersioning": {
+                    "enabled": false
+                },
+                "defaultEncryptionScope": "$account-encryption-key",
+                "denyEncryptionScopeOverride": false,
+                "publicAccess": "None"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+            "apiVersion": "2023-05-01",
+            "name": "[concat(parameters('storageAccounts_multisoftwarestorage07_name'), '/default/insights-logs-automatictuning')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_multisoftwarestorage07_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_multisoftwarestorage07_name'))]"
+            ],
+            "properties": {
+                "immutableStorageWithVersioning": {
+                    "enabled": false
+                },
+                "defaultEncryptionScope": "$account-encryption-key",
+                "denyEncryptionScopeOverride": false,
+                "publicAccess": "None"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+            "apiVersion": "2023-05-01",
+            "name": "[concat(parameters('storageAccounts_multisoftwarestorage07_name'), '/default/insights-metrics-pt1m')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_multisoftwarestorage07_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_multisoftwarestorage07_name'))]"
+            ],
+            "properties": {
+                "immutableStorageWithVersioning": {
+                    "enabled": false
+                },
+                "defaultEncryptionScope": "$account-encryption-key",
+                "denyEncryptionScopeOverride": false,
+                "publicAccess": "None"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+            "apiVersion": "2023-05-01",
+            "name": "[concat(parameters('storageAccounts_multisoftwarestorage07_name'), '/default/multisoftwarepubliccontent')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_multisoftwarestorage07_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_multisoftwarestorage07_name'))]"
+            ],
+            "properties": {
+                "immutableStorageWithVersioning": {
+                    "enabled": false
+                },
+                "defaultEncryptionScope": "$account-encryption-key",
+                "denyEncryptionScopeOverride": false,
+                "publicAccess": "Container"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/tableServices/tables",
+            "apiVersion": "2023-05-01",
+            "name": "[concat(parameters('storageAccounts_multisoftwarestorage07_name'), '/default/AzureFunctionsDiagnosticEvents202411')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/tableServices', parameters('storageAccounts_multisoftwarestorage07_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_multisoftwarestorage07_name'))]"
+            ],
+            "properties": {}
+        },
+        {
+            "type": "Microsoft.Network/azureFirewalls",
+            "apiVersion": "2024-01-01",
+            "name": "[parameters('azureFirewalls_MultiSoftwareFirewall07_name')]",
+            "location": "northeurope",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddresses_MultiSoftwareManagementPublicIP07_name'))]",
+                "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworks_MultiSoftwareVNet07_name'), 'AzureFirewallManagementSubnet')]",
+                "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddresses_MultiSoftwarePublicIP07_name'))]",
+                "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworks_MultiSoftwareVNet07_name'), 'AzureFirewallSubnet')]",
+                "[resourceId('Microsoft.Network/firewallPolicies', parameters('firewallPolicies_MultiSoftwareFirewallPolicy07_name'))]"
+            ],
+            "tags": {
+                "MultiSoftware07": "production"
+            },
+            "properties": {
+                "sku": {
+                    "name": "AZFW_VNet",
+                    "tier": "Basic"
+                },
+                "threatIntelMode": "Alert",
+                "additionalProperties": {},
+                "managementIpConfiguration": {
+                    "name": "MultiSoftwareManagementPublicIP07",
+                    "id": "[concat(resourceId('Microsoft.Network/azureFirewalls', parameters('azureFirewalls_MultiSoftwareFirewall07_name')), '/azureFirewallIpConfigurations/MultiSoftwareManagementPublicIP07')]",
+                    "properties": {
+                        "publicIPAddress": {
+                            "id": "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddresses_MultiSoftwareManagementPublicIP07_name'))]"
+                        },
+                        "subnet": {
+                            "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworks_MultiSoftwareVNet07_name'), 'AzureFirewallManagementSubnet')]"
+                        }
+                    }
+                },
+                "ipConfigurations": [
+                    {
+                        "name": "MultiSoftwarePublicIP07",
+                        "id": "[concat(resourceId('Microsoft.Network/azureFirewalls', parameters('azureFirewalls_MultiSoftwareFirewall07_name')), '/azureFirewallIpConfigurations/MultiSoftwarePublicIP07')]",
+                        "properties": {
+                            "publicIPAddress": {
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddresses_MultiSoftwarePublicIP07_name'))]"
+                            },
+                            "subnet": {
+                                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworks_MultiSoftwareVNet07_name'), 'AzureFirewallSubnet')]"
+                            }
+                        }
+                    }
+                ],
+                "networkRuleCollections": [],
+                "applicationRuleCollections": [],
+                "natRuleCollections": [],
+                "firewallPolicy": {
+                    "id": "[resourceId('Microsoft.Network/firewallPolicies', parameters('firewallPolicies_MultiSoftwareFirewallPolicy07_name'))]"
+                }
+            }
+        }
+    ]
+}
