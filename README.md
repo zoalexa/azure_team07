@@ -1,1 +1,4 @@
-[Code.Hub - Project Handout - Univators Skilling Future Digital Innovators sponsored by Pfizer - DUTH.pdf](https://github.com/user-attachments/files/18805288/Code.Hub.-.Project.Handout.-.Univators.Skilling.Future.Digital.Innovators.sponsored.by.Pfizer.-.DUTH.pdf)
+This was a project for a seminar witch focused on Cloud Engineering and Technincs generally.
+You can see the project tasks on the .pdf above and how we managed to accomplish them as team.
+(P.S.: The whole thing was made in the enviroment of Microsoft Azure)
+Enjoy :)
